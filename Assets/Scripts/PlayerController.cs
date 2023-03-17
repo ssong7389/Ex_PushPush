@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(dir), out hit, 1f)) 
         {
             Transform tr = hit.collider.transform;
+            //transform.LookAt(dir);
+            transform.localRotation = Quaternion.Euler(dir * 90f);
             //Debug.Log(tr.gameObject.tag);
             switch (hit.collider.tag)
             {
