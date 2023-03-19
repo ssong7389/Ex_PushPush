@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         //scoreText.text = $"{curCnt} / {maxCnt}";
         //stageText.text = $"STAGE: {curLv}";
 
-        Debug.Log($"max : {maxCnt}");
+        //Debug.Log($"max : {maxCnt}");
     }
 
     public void CheckBallPosition()
@@ -44,13 +44,15 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < balls.Length; j++)
             {
-                if(buckets[i].transform.position == balls[j].transform.position)
+                //Debug.Log(Vector3.Distance(buckets[i].transform.position, balls[j].transform.position));
+                if(Vector3.Distance(buckets[i].transform.position,balls[j].transform.position)<0.2f)
                 {
                     correctCnt++;
                     curCnt = correctCnt;
                 }
             }
         }
+        //Debug.Log(curCnt);
         correctCnt = 0;
         //scoreText.text = $"{curCnt}/ {maxCnt}";
         if(curCnt == maxCnt)

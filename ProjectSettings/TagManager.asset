@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Bucket
   - Ball
+  - InnerGround
   layers:
   - Default
   - TransparentFX
