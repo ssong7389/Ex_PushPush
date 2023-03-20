@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 public class DdongGroundController : MonoBehaviour
 {
     public Text scoreText;
@@ -9,7 +11,7 @@ public class DdongGroundController : MonoBehaviour
 
     void Start()
     {
-        
+        DOTween.Init();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,7 +20,8 @@ public class DdongGroundController : MonoBehaviour
         {
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             dm.score++;
-            scoreText.text = $"SCORE : {dm.score.ToString("0000")}";
+            scoreText.text = $"{dm.score.ToString("0000")}";
+            scoreText.transform.DOScale(1.5f, 0.4f).OnComplete<Tween>(() => scoreText.transform.localScale = Vector3.one);
         }
     }
 }
