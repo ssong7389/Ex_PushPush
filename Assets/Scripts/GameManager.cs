@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     public MapGenerator mapGenerator;
     public Text scoreText;
     public Text stageText;
-
+    public Text moveText;
+    public int move = 0;
     public void SetBucketsAndBalls()
     {
         StartCoroutine(FindBucketsAndBalls());
@@ -32,8 +33,8 @@ public class GameManager : MonoBehaviour
         curCnt = 0;
         maxCnt = balls.Length;
 
-        //scoreText.text = $"{curCnt} / {maxCnt}";
-        //stageText.text = $"STAGE: {curLv}";
+        scoreText.text = $"{curCnt} / {maxCnt}";
+        stageText.text = $"STAGE: {curLv}";
 
         //Debug.Log($"max : {maxCnt}");
     }
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
         }
         //Debug.Log(curCnt);
         correctCnt = 0;
-        //scoreText.text = $"{curCnt}/ {maxCnt}";
+        scoreText.text = $"{curCnt} / {maxCnt}";
         if(curCnt == maxCnt)
         {
             Debug.Log("Stage Clear");
