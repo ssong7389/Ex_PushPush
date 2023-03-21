@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/DdongIntro.unity
+    guid: 2e37a228aae548a4988d1d4cb2723595
+  - enabled: 1
+    path: Assets/Scenes/Ddong_Ver2.unity
+    guid: 45217ace7f4d20e44b53b218a673eab2
   m_configObjects: {}

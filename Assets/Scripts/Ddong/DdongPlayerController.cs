@@ -17,6 +17,7 @@ public class DdongPlayerController : MonoBehaviour
     public Transform hudTransform;
     public RectTransform canvas;
     public RectTransform hpBar;
+    public bool damaged = false;
     Slider hpSlider;
     Camera main;
 
@@ -39,26 +40,31 @@ public class DdongPlayerController : MonoBehaviour
 
     private void Update()
     {
-        Vector3 curPos = hudTransform.transform.position;
-        Vector2 screenPoint = main.WorldToScreenPoint(curPos);
-        Vector2 canvasPos;
+        if (!damaged)
+        {
+            Vector3 curPos = hudTransform.transform.position;
+            Vector2 screenPoint = main.WorldToScreenPoint(curPos);
+            Vector2 canvasPos;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas, screenPoint, Camera.main, out canvasPos);
-        hpBar.localPosition = canvasPos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas, screenPoint, Camera.main, out canvasPos);
+            hpBar.localPosition = canvasPos;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ddong"))
         {
+            damaged = true;
             hp -= 20;
             main.GetComponent<DdongCameraShake>().ShakeCamera();
             other.gameObject.GetComponent<DdongController>().TriggerEntered();
-            hpSlider.value = (float)hp / maxHp;
+            hpSlider.DOValue((float)hp / maxHp, 1f).OnComplete<Tween>(()=>damaged=false);
+            //hpSlider.value = (float)hp / maxHp;
             if (hp <= 0)
             {
+                dm.IsGameOver = true;
                 Dead();
-                dm.isGameOver = true;
             }
         }
     }
@@ -92,10 +98,22 @@ public class DdongPlayerController : MonoBehaviour
 
     void Dead()
     {
+        dm.audioManager.Lose();
+        leftBtn.gameObject.SetActive(false);
+        rightBtn.gameObject.SetActive(false);
         anim.enabled = false;
         hpBar.gameObject.SetActive(false);
+        GetComponent<BoxCollider>().enabled = false;
+       
+        transform.DORotate(new Vector3(0, 0, 90), 2f).OnComplete<Tween>(CameraMove);
+    }
+    void CameraMove()
+    {
+        main.transform.DOMove(new Vector3(transform.position.x-0.5f, 0, -3f), 2f).OnComplete<Tween>(CloseEye);
+    }
+    void CloseEye()
+    {
         leftEye.transform.DOScaleY(0.01f, 2f);
-        rightEye.transform.DOScaleY(0.01f, 2f);
-        transform.DORotate(new Vector3(0, 0, 90), 2f);
+        rightEye.transform.DOScaleY(0.01f, 2f).OnComplete<Tween>(dm.PlayGameOver);
     }
 }
