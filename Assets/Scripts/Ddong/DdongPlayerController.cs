@@ -98,7 +98,7 @@ public class DdongPlayerController : MonoBehaviour
 
     void Dead()
     {
-        dm.audioManager.Lose();
+        dm.audioManager.Dead();
         leftBtn.gameObject.SetActive(false);
         rightBtn.gameObject.SetActive(false);
         anim.enabled = false;
@@ -109,6 +109,7 @@ public class DdongPlayerController : MonoBehaviour
     }
     void CameraMove()
     {
+        dm.audioManager.Lose();
         main.transform.DOMove(new Vector3(transform.position.x-0.5f, 0, -3f), 2f).OnComplete<Tween>(CloseEye);
     }
     void CloseEye()

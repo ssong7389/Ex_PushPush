@@ -13,7 +13,9 @@ public class AudioManager : MonoBehaviour
     AudioSource source;
     public AudioClip intro;
     public AudioClip main;
+    public AudioClip dead;
     public AudioClip lose;
+    public AudioClip beep;
     public DdongManager dm;
 
     void Awake()
@@ -31,8 +33,6 @@ public class AudioManager : MonoBehaviour
         }
         source = GetComponent<AudioSource>();
         source.loop = true;
-
-
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode arg1)
@@ -42,6 +42,7 @@ public class AudioManager : MonoBehaviour
         if(scene.buildIndex == 0)
         {           
             source.clip = intro;
+            source.loop = true;
             if (source.isPlaying)
                 source.Stop();
             source.Play();
@@ -54,6 +55,7 @@ public class AudioManager : MonoBehaviour
             dm.sfxSlider.value = sfxVolume;
             dm.sfxSlider.onValueChanged.AddListener(OnSfxChanged);
             source.clip = main;
+            source.loop = true;
             if (source.isPlaying)
                 source.Stop();
             source.PlayDelayed(5f);
@@ -63,9 +65,19 @@ public class AudioManager : MonoBehaviour
     {
         source.volume = volume;
         source.clip = lose;
+        source.loop = false;
         if (source.isPlaying)
             source.Stop();
-        source.Play();
+        source.PlayOneShot(lose, volume);
+    }
+    public void Dead()
+    {
+        source.volume = volume;
+        source.clip = dead;
+        source.loop = false;
+        if (source.isPlaying)
+            source.Stop();
+        source.PlayDelayed(2f);
     }
     public void OnBgmChanged(float vol)
     {
@@ -83,6 +95,10 @@ public class AudioManager : MonoBehaviour
             dm.sfxImage.sprite = Resources.Load<Sprite>("Sprites/sound");
         }
         sfxVolume = vol;
+    }
+    public void Beep()
+    {
+        source.PlayOneShot(beep, volume);
     }
 
 }
