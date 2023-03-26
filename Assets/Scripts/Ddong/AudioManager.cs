@@ -68,7 +68,7 @@ public class AudioManager : MonoBehaviour
         source.loop = false;
         if (source.isPlaying)
             source.Stop();
-        source.PlayOneShot(lose, volume);
+        source.PlayDelayed(3f);
     }
     public void Dead()
     {
@@ -77,7 +77,7 @@ public class AudioManager : MonoBehaviour
         source.loop = false;
         if (source.isPlaying)
             source.Stop();
-        source.PlayDelayed(2f);
+        source.PlayDelayed(3f);
     }
     public void OnBgmChanged(float vol)
     {
@@ -98,7 +98,7 @@ public class AudioManager : MonoBehaviour
     }
     public void Beep()
     {
-        source.PlayOneShot(beep, volume);
+        source.PlayOneShot(beep);
     }
 
 }

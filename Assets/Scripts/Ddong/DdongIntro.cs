@@ -14,20 +14,20 @@ public class DdongIntro : MonoBehaviour
     void Start()
     {
         DOTween.Init();
-        title.rectTransform.DOMoveX(240, 1f).OnComplete<Tween>(DodgeText);
+        title.rectTransform.DOLocalMoveX(0, 1f).OnComplete<Tween>(DodgeText);
     }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            popup.transform.DOMoveY(360, 2f);
+            popup.transform.DOLocalMoveY(-240, 2f);
         }
     }
     void DodgeText()
     {
         for (int i = 0; i < dodge.Length; i++)
         {
-            dodge[i].transform.DOMoveY(600f, 2f);
+            dodge[i].transform.DOLocalMoveY(380, 2f);
         }
     }
 

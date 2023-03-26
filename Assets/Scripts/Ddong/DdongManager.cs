@@ -34,6 +34,11 @@ public class DdongManager : MonoBehaviour
     public Button pauseYes;
     public Button pauseNo;
 
+    public Text scoreTitle;
+    public Text scoreText;
+    public Button leftBtn;
+    public Button rightBtn;
+
     public Slider bgmSlider;
     public Slider sfxSlider;
 
@@ -45,10 +50,14 @@ public class DdongManager : MonoBehaviour
     public AudioManager audioManager;
     public Image bgmImage;
     public Image sfxImage;
-    float beforeBgm;
-    float beforeSfx;
+
     void Awake()
     {
+        pause.gameObject.SetActive(false);
+        leftBtn.gameObject.SetActive(false);
+        rightBtn.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
+        scoreTitle.gameObject.SetActive(false);
         pauseNo.onClick.AddListener(() => Cancel());
         main = Camera.main;
         DOTween.Init();
@@ -57,15 +66,23 @@ public class DdongManager : MonoBehaviour
     }
     private void Start()
     {
-        gameStart.transform.DOLocalMoveY(-800f, 2f).OnComplete<Tween>(StartCamMove);
+        gameStart.transform.DOLocalMoveY(-1380, 2f).OnComplete<Tween>(StartCamMove);
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     void StartCamMove()
     {
         gameStart.gameObject.SetActive(false);
-        main.transform.DOMove(camPos, 5f);
+        main.transform.DOMove(camPos, 5f).OnComplete<Tween>(()=>ActiveUI());
         main.DOFieldOfView(60, 5f);
+    }
+    void ActiveUI()
+    {
+        pause.gameObject.SetActive(true);
+        leftBtn.gameObject.SetActive(true);
+        rightBtn.gameObject.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        scoreTitle.gameObject.SetActive(true);
     }
 
     public void Pause()
@@ -90,7 +107,7 @@ public class DdongManager : MonoBehaviour
         finalScore.text = score.ToString();
         gameOver.SetActive(true);
         gameOver.transform.DOLocalRotate(new Vector3(0, 0, 0), 2f);
-        gameOver.transform.DOMoveY(0, 2f);
+        gameOver.transform.DOLocalMoveY(0, 2f);
     }
 
     public void Retry()
